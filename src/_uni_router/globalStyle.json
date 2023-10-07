@@ -1,0 +1,10 @@
+{
+  "navigationBarTextStyle": "black",
+  "navigationBarTitleText": "uni-app",
+  "navigationBarBackgroundColor": "#F8F8F8",
+  "backgroundColor": "#F8F8F8",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "hanzi-writer": "/wxcomponents/hanzi-writer-miniprogram/hanzi-writer-view"
+  }
+}

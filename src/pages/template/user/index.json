@@ -1,0 +1,15 @@
+{
+  "path": "pages/template/user/index",
+  "style": {
+    "navigationBarTitleText": "uni-app",
+    "disableScroll": true,
+    "styleIsolation": "apply-shared",
+    "renderer": "webview"
+  },
+  "#tab": true,
+  "#config": {
+    "name": "页面名称",
+    "author": "页面作者",
+    "description": "页面描述"
+  }
+}

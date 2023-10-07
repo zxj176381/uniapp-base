@@ -1,0 +1,61 @@
+<template>
+  <Layout>
+    <hanzi-writer
+      type="default"
+      hanziID="antonym"
+      hanziCode="王"
+      :loading="false"
+      strokeColor="#D25F3A"
+      :width="120"
+      :height="120"
+      :padding="10"
+    />
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+    <button>跳转详情页</button>
+  </Layout>
+</template>
+
+<script lang="ts" setup>
+import HanziWriter from "@/components/hanzi-writer/index.vue";
+import Layout from "@/components/Layout/index.vue";
+</script>
+
+<style></style>

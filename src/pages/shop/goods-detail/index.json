@@ -1,0 +1,21 @@
+{
+  "path": "pages/shop/goods-detail/index",
+  "style": {
+    "styleIsolation": "apply-shared",
+    "app-plus": {},
+    "h5": {},
+    "mp-weixin": {},
+    "mp-alipay": {},
+    "mp-baidu": {},
+    "mp-toutiao": {}
+  },
+  "#config": {
+    "name": "页面名称",
+    "author": "页面作者",
+    "description": "页面描述",
+    "alias": "SHOP_GOODS-DETAIL"
+  },
+  "#subPackage": {
+    "root": "pages/shop"
+  }
+}
