@@ -1,10 +1,11 @@
-import { serializeUrl } from "@/utils";
-import { HEADER_MAP, CONTENT_TYPE_MAP, responseStatusMap } from "./constants";
-import { cryptoDecrypt } from "./decrypt";
-import { normalizeResponseData } from "./utils";
 import { useDialog, useStorage } from "@/hooks";
+import { serializeUrl, logInfo, removeEmptyValues } from "@/utils";
+import { HEADER_MAP, CONTENT_TYPE_MAP, responseStatusMap } from "./constants";
+import { cryptoDecrypt, encrypt } from "./decrypt";
+import { normalizeResponseData } from "./utils";
 
-// TODO 使用本地缓存存储 token 再使用 hooks 校验和获取新的 token 然后进行回调调用接口
+const { deviceId, platform, SDKVersion, deviceModel, system, version, deviceType } = uni.getSystemInfoSync();
+
 export default function request({
   url,
   path,
@@ -21,6 +22,17 @@ export default function request({
   requestUrl = serializeUrl(requestUrl, query);
   // 添加 contentType
   header[HEADER_MAP.CONTENT_TYPE] = CONTENT_TYPE_MAP[contentType];
+  header[HEADER_MAP.GUID] = encrypt({
+    deviceId,
+    platform,
+    SDKVersion,
+    deviceModel,
+    system,
+    version,
+    deviceType,
+    appName: import.meta.env.VITE_APP_NAME,
+    appid: import.meta.env.VITE_WECHAT_APPID
+  });
   // 添加 token
   if (withToken) {
     const { getStorage } = useStorage();
@@ -31,7 +43,7 @@ export default function request({
   return new Promise<ServiceReturnResponse<any>>((resolve, reject) => {
     uni.request({
       url: requestUrl,
-      data,
+      data: data ? removeEmptyValues(data) : undefined,
       header,
       method,
       timeout: import.meta.env.VITE_TIMEOUT,
@@ -42,6 +54,7 @@ export default function request({
             resData = cryptoDecrypt(resData.result);
           }
           const result = normalizeResponseData(resData);
+          logInfo(`@${requestUrl}`, data, result);
           if (result._status === responseStatusMap.FAIL) {
             if (showDialog) {
               const { showToast } = useDialog();

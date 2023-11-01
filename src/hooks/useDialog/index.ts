@@ -27,9 +27,21 @@ export function useDialog() {
    * @param options 同 uni.showModal
    */
   const showModal = (options: UniApp.ShowModalOptions) => {
+    const { success, fail } = options;
     options = {
       title: "提示",
-      ...options
+      ...options,
+      success: (res) => {
+        if (res.confirm) {
+          success && success(res);
+        }
+        if (res.cancel) {
+          fail && fail(res);
+        }
+      },
+      fail: (err) => {
+        fail && fail(err);
+      }
     };
     uni.showModal(options);
   };

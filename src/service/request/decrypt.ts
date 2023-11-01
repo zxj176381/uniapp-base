@@ -17,3 +17,11 @@ export const cryptoDecrypt = (options: string) => {
   const result = pako.inflate(arrayBuffer, { to: "string" });
   return JSON.parse(result);
 };
+
+export const encrypt = (options: any) => {
+  if (!options) return "";
+  return CryptoJS.AES.encrypt(JSON.stringify(options), CryptoJS.enc.Utf8.parse(import.meta.env.VITE_ENCRYPT_KEY), {
+    mode: CryptoJS.mode.ECB,
+    padding: CryptoJS.pad.Pkcs7
+  }).toString();
+};

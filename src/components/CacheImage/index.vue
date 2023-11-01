@@ -1,37 +1,23 @@
 <template>
-  <image :src="imageSrc" :mode="props.mode" :class="imageClass" />
+  <image :src="imageSrc" :mode="props.mode" class="image-class" :style="customStyle" />
 </template>
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useFileManagerStore } from "@/store";
-import { computed, watch } from "vue";
-import { deleteStaticUrl, resolveCacheUrl, resolveStaticUrl } from "@/utils";
-import { useConsole, useFileManager } from "@/hooks";
+import { computed, watch, type CSSProperties } from "vue";
+import { deleteStaticUrl, resolveCacheUrl, resolveStaticUrl, logError } from "@/utils";
+import { useFileManager } from "@/hooks";
 
 interface ImageProps {
   imageSrc: string;
-  mode?:
-    | "scaleToFill"
-    | "aspectFit"
-    | "aspectFill"
-    | "widthFix"
-    | "heightFix"
-    | "top"
-    | "bottom"
-    | "center"
-    | "left"
-    | "right"
-    | "top left"
-    | "top right"
-    | "bottom left"
-    | "bottom right";
+  isVerify?: false;
   "show-menu-by-longpress"?: boolean;
-  imageClass?: string;
+  mode?: ImageMode;
+  customStyle?: string | CSSProperties;
 }
 const props = defineProps<ImageProps>();
 
-const { logError } = useConsole();
 const { cacheImage } = useFileManager();
 const fileManagerStore = useFileManagerStore();
 const { saveImageList } = storeToRefs(fileManagerStore);
@@ -39,11 +25,9 @@ const { saveImageList } = storeToRefs(fileManagerStore);
 watch(
   () => props.imageSrc,
   () => {
-    try {
-      cacheImage(props.imageSrc);
-    } catch (error) {
+    cacheImage(props.imageSrc, props.isVerify).catch((error) => {
       logError(`@${props.imageSrc}`, error);
-    }
+    });
   },
   {
     immediate: true
@@ -65,4 +49,10 @@ const imageSrc = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<script lang="ts">
+export default {
+  externalClasses: ["image-class"]
+};
+</script>
+
+<style lang="scss"></style>

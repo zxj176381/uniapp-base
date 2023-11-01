@@ -7,7 +7,8 @@ export const CONTENT_TYPE_MAP = {
 // 头信息
 export const HEADER_MAP = {
   CONTENT_TYPE: "content-type",
-  TOKEN: "X-Access-Token"
+  TOKEN: "X-Access-Token",
+  GUID: "guid"
 } as const;
 
 export const responseStatusMap = {

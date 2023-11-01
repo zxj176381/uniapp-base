@@ -17,6 +17,10 @@ export function useStorage() {
   function setStorage(key: "cacheImageList", value: CacheImageList[]): void;
   function setStorage(key: "tokenInfo", value: TokenInfo): void;
   function setStorage(key: "loginCode", value: string): void;
+  function setStorage(key: "syncExerciseCourseGroup", value: SyncExerciseCourseGroup): void;
+  function setStorage(key: "syncExerciseZFont", value: SyncExerciseZFont): void;
+  function setStorage(key: "videoCacheTime", value: VideoCacheTime[]): void;
+  function setStorage(key: "rulling", value: Rulling): void;
   function setStorage(key: string, value: any) {
     const newKey = addEnvSuffix(key);
     uni.setStorageSync(newKey, value);
@@ -31,6 +35,10 @@ export function useStorage() {
   function getStorage(key: "cacheImageList", remove?: boolean): CacheImageList[] | undefined;
   function getStorage(key: "tokenInfo", remove?: boolean): TokenInfo | undefined;
   function getStorage(key: "loginCode", remove?: boolean): string | undefined;
+  function getStorage(key: "syncExerciseCourseGroup", remove?: boolean): SyncExerciseCourseGroup | undefined;
+  function getStorage(key: "syncExerciseZFont", remove?: boolean): SyncExerciseZFont | undefined;
+  function getStorage(key: "videoCacheTime", remove?: boolean): VideoCacheTime[] | undefined;
+  function getStorage(key: "rulling", remove?: boolean): Rulling | undefined;
   function getStorage(key: string, remove = false) {
     const newKey = addEnvSuffix(key);
     const value = uni.getStorageSync(newKey);

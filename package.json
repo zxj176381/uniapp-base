@@ -53,6 +53,7 @@
     "@dcloudio/uni-mp-weixin": "3.0.0-3081220230817001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-3081220230817001",
     "crypto-js": "^4.1.1",
+    "dayjs": "^1.11.10",
     "pako": "^2.1.0",
     "pinia": "2.0.33",
     "vue": "^3.2.45",

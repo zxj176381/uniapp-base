@@ -16,7 +16,7 @@ export function useFileManager() {
    * @param imageSrc
    * @returns
    */
-  const cacheImage = (imageSrc: string) => {
+  const cacheImage = (imageSrc: string, isVerify = false) => {
     imageSrc = deleteStaticUrl(imageSrc);
     return new Promise<CacheImageList>((resolve, reject) => {
       if (imageSrc) {
@@ -24,29 +24,47 @@ export function useFileManager() {
         if (cacheImageList) {
           const currentImageInfo = cacheImageList.find((item) => item.imageSrc === resolveCacheUrl(imageSrc));
           if (currentImageInfo) {
-            // 校验两张图片size 是否相同 相同的话不管 不相同替换
-            // 新的图片使用 OSS 获取图片信息 好处 资源小，不用获取原始图片
-            getOSSImageInfo(resolveStaticUrl(imageSrc)).then((newCacheImageInfo) => {
-              if (Number(newCacheImageInfo!.FileSize.value) === currentImageInfo.size) {
-                resolve(currentImageInfo);
-              } else {
+            // 校验图片是否在文件系统中存在
+            checkFileExists(imageSrc)
+              .then(() => {
+                // 校验两张图片size 是否相同 相同的话不管 不相同替换
+                // 新的图片使用 OSS 获取图片信息 好处 资源小，不用获取原始图片
+                if (isVerify) {
+                  getOSSImageInfo(resolveStaticUrl(imageSrc)).then((newCacheImageInfo) => {
+                    if (Number(newCacheImageInfo!.FileSize.value) === currentImageInfo.size) {
+                      resolve(currentImageInfo);
+                    } else {
+                      savaImageFile(imageSrc).then(
+                        (imageInfo) => {
+                          resolve(imageInfo);
+                        },
+                        (error) => {
+                          reject(error);
+                        }
+                      );
+                    }
+                  });
+                } else {
+                  resolve(currentImageInfo);
+                }
+              })
+              .catch(() => {
                 savaImageFile(imageSrc).then(
                   (imageInfo) => {
                     resolve(imageInfo);
                   },
-                  () => {
-                    reject();
+                  (error) => {
+                    reject(error);
                   }
                 );
-              }
-            });
+              });
           } else {
             savaImageFile(imageSrc).then(
               (imageInfo) => {
                 resolve(imageInfo);
               },
-              () => {
-                reject();
+              (error) => {
+                reject(error);
               }
             );
           }
@@ -55,8 +73,8 @@ export function useFileManager() {
             (imageInfo) => {
               resolve(imageInfo);
             },
-            () => {
-              reject();
+            (error) => {
+              reject(error);
             }
           );
         }
@@ -136,6 +154,23 @@ export function useFileManager() {
   };
 
   /**
+   * 检查文件是否存在，用于处理 缓存中有图片，但是文件系统里没有时重新创建
+   */
+  const checkFileExists = (filePath: string) => {
+    return new Promise<boolean>((resolve, reject) => {
+      fs.access({
+        path: resolveCacheUrl(filePath),
+        success: () => {
+          resolve(true);
+        },
+        fail: (error) => {
+          reject();
+        }
+      });
+    });
+  };
+
+  /**
    * 获取本地缓存图片的大小
    * @param imageSrc 半路径
    * @returns
@@ -171,7 +206,7 @@ export function useFileManager() {
         fail: () => {
           reject({
             status: 500,
-            message: "获取图片信息失败"
+            message: "该图片不存在"
           });
         }
       });

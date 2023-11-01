@@ -52,7 +52,10 @@
         "componentFramework": "glass-easel",
         "rendererOptions": {
             "skyline": {
-                "defaultDisplayBlock": true
+                "defaultDisplayBlock": true,
+                "disableABTest": true,
+                "sdkVersionBegin": "3.0.1",
+                "sdkVersionEnd": "15.255.255"
             }
         }
     },

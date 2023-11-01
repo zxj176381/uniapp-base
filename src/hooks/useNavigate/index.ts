@@ -1,37 +1,9 @@
-import { storeToRefs } from "pinia";
 import routerAlias from "@/routers/alias";
-import routerExclude from "@/routers/exclude";
-import { useUserStore } from "@/store";
-import { useStorage } from "../useStorage";
 import { useDialog } from "../useDialog";
 import { resolveAbsolutePagePath, serializeUrl } from "@/utils";
 
 export function useNavigate() {
-  const { setGlobalData } = useStorage();
   const { showToast } = useDialog();
-  const userStore = useUserStore();
-  const { isLogged } = storeToRefs(userStore);
-
-  /**
-   * 跳转前检测是否有权限通过
-   * @param {String} pagePath 跳转目标页面路径
-   * @param {Function} callback 有权限进入之后的回调函数
-   */
-  const checkPermission = (type: "action" | "page", pagePath: any, callback?: () => void) => {
-    let authorized = false;
-    if (type === "page") {
-      authorized = routerExclude.login && routerExclude.login.includes(pagePath) ? isLogged.value : true;
-    } else if (type === "action") {
-      authorized = isLogged.value;
-    }
-    if (authorized) {
-      callback && callback();
-    } else {
-      if (callback) {
-        setGlobalData("AUTH_CALLBACK", callback);
-      }
-    }
-  };
 
   /**
    * 跳转到指定页面
@@ -49,9 +21,7 @@ export function useNavigate() {
     // 路径转换为绝对路径
     options.url = resolveAbsolutePagePath(options.url);
     options.url = serializeUrl(options.url, params);
-    checkPermission("page", path, () => {
-      uni.navigateTo(options);
-    });
+    uni.navigateTo(options);
   };
 
   /**
@@ -70,9 +40,7 @@ export function useNavigate() {
     // 图片转换为绝对路径
     options.url = resolveAbsolutePagePath(options.url);
     options.url = serializeUrl(options.url, params);
-    checkPermission("page", path, () => {
-      uni.redirectTo(options);
-    });
+    uni.redirectTo(options);
   };
 
   /**
@@ -91,9 +59,7 @@ export function useNavigate() {
     // 图片转换为绝对路径
     options.url = resolveAbsolutePagePath(options.url);
     options.url = serializeUrl(options.url, params);
-    checkPermission("page", path, () => {
-      uni.reLaunch(options);
-    });
+    uni.reLaunch(options);
   };
 
   /**

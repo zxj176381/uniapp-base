@@ -1,5 +1,6 @@
 declare type ShowActionSheetListIF = (string | Record<string, any>)[];
-declare interface ShowActionSheetOptionsString<T> extends Omit<UniApp.ShowActionSheetOptions, "itemList" | "success"> {
+declare interface ShowActionSheetOptionsString<T>
+  extends Omit<UniApp.ShowActionSheetOptions, "alertText" | "itemColor" | "fail"> {
   /**
    * 	按钮的信息数组，数组长度最大为 6
    */
